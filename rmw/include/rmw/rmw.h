@@ -279,6 +279,46 @@ rmw_ret_t
 rmw_fini_publisher_allocation(
   rmw_publisher_allocation_t * allocation);
 
+/// Initialize a loaned message and its internal ros message.
+/**
+ * Initializes a loaned message and the ros message according to the given typesupport.
+ *
+ * The memory allocated for the ros message belongs to the middleware and must not be deallocated
+ * other than by a call to \sa rmw_fini_loaned_message.
+ *
+ * \param[in] publisher Publisher to which the ros message is associated.
+ * \param[in] type_support Typesupport to which the internal ros message is allocated.
+ * \param[out] loaned_message Loaned message structure to be initialized.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if an argument is null, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs and no message can be initialized.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_init_loaned_message(
+  const rmw_publisher_t * publisher,
+  const rosidl_message_type_support_t * type_support,
+  rmw_loaned_message_t * loaned_message);
+
+/// Destroy and deallocate a loaned message
+/**
+ * Deallocates and destroys a previously loaned message.
+ * This function is the only allowed way of deallocating a loaned message.
+ *
+ * \param[in] publisher Publisher to which the loaned message is associated.
+ * \param[in] loaned_message Loaned message to be deallocated and destroyed.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if an argument is null, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs and no message can be initialized.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_fini_loaned_message(
+  const rmw_publisher_t * publisher,
+  rmw_loaned_message_t * loaned_message);
+
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_publisher_t *
@@ -299,6 +339,7 @@ rmw_destroy_publisher(rmw_node_t * node, rmw_publisher_t * publisher);
  *
  * \param[in] publisher Publisher to be used to send message.
  * \param[in] ros_message Message to be sent.
+ * \param[in] is_loaned Boolean flag indicating if the ros message was loaned from the middleware.
  * \param[in] allocation Specify preallocated memory to use (may be NULL).
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if publisher or ros_message is null, or
@@ -310,7 +351,8 @@ rmw_ret_t
 rmw_publish(
   const rmw_publisher_t * publisher,
   const void * ros_message,
-  rmw_publisher_allocation_t * allocation);
+  rmw_publisher_allocation_t * allocation,
+  bool is_loaned);
 
 /// Retrieve the number of matched subscriptions to a publisher.
 /**
