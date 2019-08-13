@@ -279,27 +279,24 @@ rmw_ret_t
 rmw_fini_publisher_allocation(
   rmw_publisher_allocation_t * allocation);
 
-/// Initialize a loaned message and its internal ros message.
+/// Allocate memory for a loaned message.
 /**
- * Initializes a loaned message and the ros message according to the given typesupport.
- *
  * The memory allocated for the ros message belongs to the middleware and must not be deallocated
- * other than by a call to \sa rmw_fini_loaned_message.
+ * other than by a call to \sa rmw_deallocate_loaned_message.
+ * The given size has to be the exact size of the to be allocated message.
  *
- * \param[in] publisher Publisher to which the ros message is associated.
+ * \param[in] publisher Publisher to which the allocated message is associated.
  * \param[in] type_support Typesupport to which the internal ros message is allocated.
- * \param[out] loaned_message Loaned message structure to be initialized.
- * \return `RMW_RET_OK` if successful, or
- * \return `RMW_RET_INVALID_ARGUMENT` if an argument is null, or
- * \return `RMW_RET_ERROR` if an unexpected error occurs and no message can be initialized.
+ * \param[in] message_size The amount of memory to be allocated.
+ * \return pointer to allocated memory.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
-rmw_ret_t
-rmw_init_loaned_message(
+void *
+rmw_allocate_loaned_message(
   const rmw_publisher_t * publisher,
   const rosidl_message_type_support_t * type_support,
-  rmw_loaned_message_t * loaned_message);
+  size_t message_size);
 
 /// Destroy and deallocate a loaned message
 /**
@@ -315,9 +312,9 @@ rmw_init_loaned_message(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_fini_loaned_message(
+rmw_deallocate_loaned_message(
   const rmw_publisher_t * publisher,
-  rmw_loaned_message_t * loaned_message);
+  void * loaned_message);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
