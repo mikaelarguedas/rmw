@@ -58,6 +58,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_t
   const char * implementation_identifier;
   void * data;
   const char * topic_name;
+  bool can_loan_messages;
 } rmw_subscription_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_service_t
