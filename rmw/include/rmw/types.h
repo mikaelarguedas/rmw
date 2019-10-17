@@ -333,6 +333,13 @@ typedef struct RMW_PUBLIC_TYPE rmw_gid_t
   uint8_t data[RMW_GID_STORAGE_SIZE];
 } rmw_gid_t;
 
+typedef struct RMW_PUBLIC_TYPE rmw_message_sequence_t
+{
+  void * message_sequence;
+  size_t size;
+  size_t capacity;
+} rmw_message_sequence_t;
+
 typedef struct RMW_PUBLIC_TYPE rmw_message_info_t
 {
   // const rmw_time_t received_timestamp;
