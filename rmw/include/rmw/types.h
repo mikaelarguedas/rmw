@@ -28,7 +28,6 @@ extern "C"
 #include <rcutils/logging.h>
 
 #include "rmw/init.h"
-#include "rmw/loaned_message_sequence.h"
 #include "rmw/ret_types.h"
 #include "rmw/serialized_message.h"
 #include "rmw/visibility_control.h"
@@ -333,12 +332,6 @@ typedef struct RMW_PUBLIC_TYPE rmw_gid_t
   uint8_t data[RMW_GID_STORAGE_SIZE];
 } rmw_gid_t;
 
-typedef struct RMW_PUBLIC_TYPE rmw_message_sequence_t
-{
-  void * message_sequence;
-  size_t size;
-  size_t capacity;
-} rmw_message_sequence_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_message_info_t
 {
@@ -347,12 +340,52 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_t
   bool from_intra_process;
 } rmw_message_info_t;
 
+typedef struct RMW_PUBLIC_TYPE rmw_message_sequence_t
+{
+  void * data;
+  size_t size;
+  size_t capacity;
+} rmw_message_sequence_t;
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_message_sequence_t
+rmw_get_zero_initialized_message_sequence(void);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_init_message_sequence(
+  rmw_message_sequence_t * message_sequence
+);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_fini_message_sequence(
+  rmw_message_sequence_t * message_sequence
+);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_message_sequence_at(
+  const rmw_message_sequence_t * message_sequence,
+  size_t index,
+  void ** ros_message
+);
+
 typedef struct RMW_PUBLIC_TYPE rmw_message_info_sequence_t
 {
   rmw_message_info_t * message_info_sequence;
   size_t size;
   size_t capacity;
 } rmw_message_info_sequence_t;
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_message_info_sequence_t
+rmw_get_zero_initialized_message_info_sequence(void);
 
 enum {RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT = 0};
 

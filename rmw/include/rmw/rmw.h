@@ -687,8 +687,8 @@ rmw_take(
  * Take a sequence of incoming ROS message from a given subscription.
  *
  * \param[in] subscription The subscription object to take from.
+ * \param[in] count The number of messages to attempt to take.
  * \param[out] ros_message_sequence The sequence of ROS message data on success.
- * \param[out] taken Boolean flag indicating if a message was taken or not.
  * \param[in] allocation Preallocated buffer to use (may be NULL).
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
@@ -698,8 +698,8 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_take_sequence(
   const rmw_subscription_t * subscription,
-  rmw_message_sequence_t * ros_message_sequence,
-  bool * taken,
+  size_t count,
+  rmw_message_sequence_t * message_sequence,
   rmw_subscription_allocation_t * allocation);
 
 /// Take an incoming message from a subscription with additional metadata.
@@ -727,10 +727,11 @@ rmw_take_with_info(
 /// Take a sequence of incoming message from a subscription with additional metadata.
 /**
  * Take a sequence of incoming ROS message from a given subscription.
+ * The count  parameter is used
  *
  * \param[in] subscription The subscription object to take from.
+ * \param[in] count Number of messages to attempt to take.
  * \param[out] ros_message_sequence The sequence of ROS message data on success.
- * \param[out] taken Boolean flag indicating if a message was taken or not.
  * \param[out] message_info_sequence The sequence of additional message metadata.
  * \param[in] allocation Preallocated buffer to use (may be NULL).
  * \return `RMW_RET_OK` if successful, or
@@ -741,8 +742,8 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_take_sequence_with_info(
   const rmw_subscription_t * subscription,
+  size_t count,
   rmw_message_sequence_t * ros_message,
-  bool * taken,
   rmw_message_info_sequence_t * message_info,
   rmw_subscription_allocation_t * allocation);
 

@@ -12,33 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW__LOANED_MESSAGE_SEQUENCE_H_
-#define RMW__LOANED_MESSAGE_SEQUENCE_H_
+#include "rmw/types.h"
 
-#include <stddef.h>
-
-#include "rmw/macros.h"
-#include "rmw/visibility_control.h"
-
-#if __cplusplus
-extern "C"
+rmw_message_sequence_t
+rmw_get_zero_initialized_message_sequence(void)
 {
-#endif
+  static rmw_message_sequence_t message_sequence = {
+    .data = NULL,
+    .size = 0u,
+    .capacity = 0u
+  };
 
-typedef struct RMW_PUBLIC_TYPE rmw_loaned_message_sequence_t
-{
-  void * message_sequence;
-  size_t size;
-  size_t capacity;
-} rmw_loaned_message_sequence_t;
-
-RMW_PUBLIC
-RMW_WARN_UNUSED
-rmw_loaned_message_sequence_t
-rmw_get_zero_initialized_loaned_message_sequence(void);
-
-#if __cplusplus
+  return message_sequence;
 }
-#endif
 
-#endif  // RMW__LOANED_MESSAGE_SEQUENCE_H_
+rmw_message_info_sequence_t
+rmw_get_zero_initialized_message_info_sequence(void)
+{
+  static rmw_message_info_sequence_t message_info_sequence = {
+    .message_info_sequence = NULL,
+    .size = 0u,
+    .capacity = 0u
+  };
+
+  return message_info_sequence;
+}
